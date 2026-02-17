@@ -15,10 +15,37 @@ int main() {
 	
 	*table.find(key) = "cat";
 	std::string found = *table.find(key);
-	std::cout << found << std::endl;
+	std::cout << found << std::endl;	
 
-	table.remove(key);
-	std::cout << table.contains(key) << std::endl;
+	const ChainHashTable<int, std::string> table2 = table;
+	std::string found2 = *(table2.find(key));
+	std::cout << found2 << std::endl;
+	std::string foundAt = table.at(key);
+
+	std::cout << foundAt << std::endl;
+	try {
+		table.at(2);
+	}
+	catch (std::exception& e) {
+		std::cout << e.what() << std::endl;
+	}
+
+	std::string found3 = table2.at(key);
+	std::cout << found3 << std::endl;
+
+	std::string found4 = table[key];
+	std::cout << found4 << std::endl;
+	
+	table[key] = "dog";
+	std::cout << table[key] << std::endl;	
+
+	std::cout << table.size() << std::endl;
+	std::cout << table.max_bucket_count() << std::endl;
+
+	table.rehash(200);
+	std::cout << table.size() << std::endl;
+	std::cout << table.max_bucket_count() << std::endl;
+
 
 	
 	return 0;
