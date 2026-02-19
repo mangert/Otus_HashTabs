@@ -1,12 +1,13 @@
 #include <iostream>
 #include <string>
 #include "ChainHashTable.h"
+#include "OpenHashTable.h"
 
 int main() {
 	
 	setlocale(LC_ALL, "Russian");
 	
-	ChainHashTable<int, std::string> table(100);
+	OpenHashTable<int, std::string> table(101);
 	int key = 135;
 	std::string value = "dog";	
 	std::cout << "---------------" << std::endl;
@@ -17,7 +18,7 @@ int main() {
 	std::string found = *table.find(key);
 	std::cout << found << std::endl;	
 
-	const ChainHashTable<int, std::string> table2 = table;
+	const OpenHashTable<int, std::string> table2 = table;
 	std::string found2 = *(table2.find(key));
 	std::cout << found2 << std::endl;
 	std::string foundAt = table.at(key);
@@ -45,8 +46,10 @@ int main() {
 	table.rehash(200);
 	std::cout << table.size() << std::endl;
 	std::cout << table.max_bucket_count() << std::endl;
-
-
+	std::cout << table[key] << std::endl;
+	std::cout << "---" << table[14] << std::endl;
+	table[14] = "fox";
+	std::cout << table[14] << std::endl;
 	
 	return 0;
 }

@@ -16,9 +16,18 @@ public:
 		: table(size), M(size), A(a), B(b), max_load_factor(mlf){
 		
 		if (M == 0) throw std::invalid_argument("Size must be positive");
+
+		// Хотя бы один коэффициент должен быть ненулевым
+		if (A == 0 && B == 0) {
+			throw std::invalid_argument("At least one of A or B must be non-zero");
+		}
 		
-		if (std::gcd(A, M) != 1 || std::gcd(B, M) != 1) {
-			throw std::invalid_argument("A and B must be coprime with M");
+		// Проверяем только ненулевые коэффициенты
+		if (A != 0 && std::gcd(A, M) != 1) {
+			throw std::invalid_argument("A must be coprime with M or zero");
+		}
+		if (B != 0 && std::gcd(B, M) != 1) {
+			throw std::invalid_argument("B must be coprime with M or zero");
 		}
 	}
 
@@ -42,7 +51,9 @@ public:
 		return insert_impl(std::move(key), value);
 	}
 		
-	bool insert(K key, V&& value) override {//заглушка
+	bool insert(K key, V&& value) override {
+
+		constexpr double GROWTH_FACTOR = 1.618l;  //золотое сечение
 		
 		if (load_factor() >= max_load_factor) {
 			rehash(static_cast<size_t>(M * GROWTH_FACTOR));
@@ -51,8 +62,20 @@ public:
 	}
 
 	//операции удаления
-	bool remove(const K& key) override {//заглушка
+	bool remove(const K& key) override {
 		
+		size_t base_hash = std::hash<K>{}(key) % M;
+		for (size_t i = 0; i < M; ++i) {
+			auto& entry = table[probe(base_hash, i)];
+			if (entry.is_active() && entry.key == key) {
+				entry.state = EntryState::DELETED;
+				--element_count;
+				return true;
+			}
+			if (entry.is_empty()) {
+				return false;
+			}
+		}		
 		return false;
 	}
 
@@ -100,34 +123,115 @@ public:
 		return nullptr;
 	}
 
-	V& at(const K& key) override {//заглушка
+	V& at(const K& key) override {
 		
-		V a{};
-		return a;
-
+		size_t base_hash = std::hash<K>{}(key) % M;
+		for (size_t i = 0; i < M; ++i) {
+			auto& entry = table[probe(base_hash, i)];
+			if (entry.is_active() && entry.key == key) {
+				return entry.value;
+			}
+			if (entry.is_empty()) {
+				throw std::out_of_range("Key not found in hash table");
+			}
+			
+		}
+		throw std::out_of_range("Key not found in hash table");		
 	};
 
 	const V& at(const K& key) const override {//заглушка
-		V a{};
-		return a;
-		
+		size_t base_hash = std::hash<K>{}(key) % M;
+		for (size_t i = 0; i < M; ++i) {
+			const auto& entry = table[probe(base_hash, i)];
+			if (entry.is_active() && entry.key == key) {
+				return entry.value;
+			}
+			if (entry.is_empty()) {
+				throw std::out_of_range("Key not found in hash table");
+			}
+		}	
+		throw std::out_of_range("Key not found in hash table");		
 	}
 
 	// Только для неконстантных объектов
-	V& operator[](const K& key) override {//заглушка
-		V a{};
-		return a;
+	V& operator[](const K& key) override {
+		
+		size_t base_hash = std::hash<K>{}(key) % M;		
+		int first_deleted = -1;		
+
+		for (size_t i = 0; i < M; ++i) {
+			size_t index = probe(base_hash, i);
+			Entry& entry = table[index];
+
+			if (entry.is_active()) {
+				if (entry.key == key) return entry.value;
+			}
+			else if (entry.is_deleted()) {
+				if (first_deleted == -1) first_deleted = index;
+			}
+			else { // EMPTY				
+				entry = Entry(key, V{});
+				++element_count;
+				return entry.value;
+			}
+		}
+		
+		if (first_deleted != -1) {
+			table[first_deleted] = Entry(key, V{});
+			++element_count;
+			return table[first_deleted].value;
+		}
+		
+		throw std::runtime_error("Hash table invariant violated");
 	}
 
 	//очистка
-	void clear() override {//заглушка
-
+	void clear() override {
+		
+		std::vector<Entry> new_table(M);
+		element_count = 0; 
+		table = new_table;
 	}
 
 	//---------- Рехэширование -------------------//
-	void rehash(size_t new_size) override {//заглушка
-	}
+	void rehash(size_t new_M) override {
+		if (new_M < M) {
+			throw std::invalid_argument("rehash: new size too small");
+		}
+		if (new_M == M) return;
 
+		// Проверяем только ненулевые коэффициенты
+		if (A != 0 && std::gcd(A, new_M) != 1) {
+			throw std::invalid_argument("new table size must be coprime with A");
+		}
+		if (B != 0 && std::gcd(B, M) != 1) {
+			throw std::invalid_argument("new table size must be coprime with B");
+		}		
+
+		std::vector<Entry> rehash_table(new_M);
+		size_t new_count = 0;
+
+		for (auto& old : table) {  // берем по ссылке, чтобы перемещать
+			if (!old.is_active()) continue;  // только активные
+
+			size_t hash = std::hash<K>{}(old.key) % new_M;
+
+			for (size_t i = 0; i < new_M; ++i) {  // ищем по всей новой таблице
+				size_t index = probe(hash, i, new_M);
+				Entry& entry = rehash_table[index];
+
+				if (entry.is_empty()) {
+					entry = std::move(old);  // перемещаем старую запись
+					++new_count;
+					break;
+				}
+			}
+		}
+
+		element_count = new_count;
+		table = std::move(rehash_table);
+		M = new_M;
+	}
 
 	//---------- Характeристики-------------------//
 
@@ -157,6 +261,11 @@ private:
 		
 		return (hash + i * A + i * i * B) % M;
 	}
+	//перегрузка с параметром - для рехэширования
+	size_t probe(size_t hash, size_t i, size_t m) const {
+
+		return (hash + i * A + i * i * B) % m;
+	}
 
 	//внутренняя реализация вставки
 	template<typename VFwd>
@@ -176,7 +285,7 @@ private:
 			}
 			else { // EMPTY
 				int target = (first_deleted != -1) ? first_deleted : index;
-				table[target] = Entry(std::move(key), std::forward<VFwd>(value));
+				table[target] =	Entry(std::move(key), std::forward<VFwd>(value));				
 				++element_count;
 				return true;
 			}
@@ -199,10 +308,14 @@ private:
 		V value;
 		EntryState state = EntryState::EMPTY;
 
-		Entry() = default;
-		Entry(const K& k, const V& v) : key(k), value(v), state(EntryState::ACTIVE) {}
-		Entry(K k, const V& v) : key(std::move(k)), value(v), state(EntryState::ACTIVE) {}
-		Entry(K k, V&& v) : key(std::move(k)), value(std::move(v)), state(EntryState::ACTIVE) {}
+		Entry() = default;		
+
+		template<typename KFwd, typename VFwd>
+		Entry(KFwd&& k, VFwd&& v)
+			: key(std::forward<KFwd>(k)),
+			value(std::forward<VFwd>(v)),
+			state(EntryState::ACTIVE) {
+		}
 
 		bool is_active() const { return state == EntryState::ACTIVE; }
 		bool is_empty() const { return state == EntryState::EMPTY; }
@@ -218,7 +331,7 @@ private:
 	size_t A; //линейный
 	size_t B; //квадратичный
 
-	const max_load_factor;
+	const double max_load_factor;
 
 	size_t element_count = 0; //количество "живых" элементов
 };

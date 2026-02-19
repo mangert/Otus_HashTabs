@@ -117,7 +117,7 @@ public:
 				return v;
 			}
 		}
-		throw std::exception("Not found");
+		throw std::out_of_range("Key not found in hash table");
 	
 	};  
 	
@@ -146,7 +146,6 @@ public:
 
 	//очистка
 	void clear() override {
-
 		std::vector<std::list<std::pair<K, V>>> new_table(table.size());
 		table = std::move(new_table);
 	}
