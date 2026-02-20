@@ -2,11 +2,13 @@
 #include <string>
 #include "ChainHashTable.h"
 #include "OpenHashTable.h"
+#include "HashTableTest.h"
 
 int main() {
 	
 	setlocale(LC_ALL, "Russian");
 	
+	/*
 	OpenHashTable<int, std::string> table(101);
 	int key = 135;
 	std::string value = "dog";	
@@ -49,7 +51,8 @@ int main() {
 	std::cout << table[key] << std::endl;
 	std::cout << "---" << table[14] << std::endl;
 	table[14] = "fox";
-	std::cout << table[14] << std::endl;
+	std::cout << table[14] << std::endl;*/
+	HashTableTest<OpenHashTable<int, std::string>>::comprehensive_test("edge");
 	
 	return 0;
 }
