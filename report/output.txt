@@ -1,0 +1,339 @@
+﻿Тестирование хэш-таблиц
+-------------------------------------------------
+
+========================================
+Hash Tables TEST (Chain Hash Table (метод цепочек))
+========================================
+
+
+1. EDGE CASES TEST
+------------------
++ Empty table checks passed
++ Single element checks passed
++ Duplicate prevention check passed
++ Single element removal passed
++ Non-existent removal passed
++ Clear operation passed
+++ All edge cases passed
+
+
+2. MAIN TEST
+-------------------------------------
+Iteration 0; M =101
+Fill table --------------------------
+  Table filled in 0 ms
+  Size: 75, buckets 101
+  Load factor: 0.742574
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 0 ms
+  New size: 69, buckets 101
+  Load factor: 0.683168
+Rehash X2 --------------------------
+  Table have been rehashed in 0 ms
+  New size: 69, buckets 203
+  Load factor: 0.339901
+Iteration 1; M =1011
+Fill table --------------------------
+  Table filled in 0 ms
+  Size: 756, buckets 1011
+  Load factor: 0.747774
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 0 ms
+  New size: 681, buckets 1011
+  Load factor: 0.673591
+Rehash X2 --------------------------
+  Table have been rehashed in 0 ms
+  New size: 681, buckets 2023
+  Load factor: 0.336629
+Iteration 2; M =10111
+Fill table --------------------------
+  Table filled in 1 ms
+  Size: 7581, buckets 10111
+  Load factor: 0.749777
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 0 ms
+  New size: 6825, buckets 10111
+  Load factor: 0.675007
+Rehash X2 --------------------------
+  Table have been rehashed in 4 ms
+  New size: 6825, buckets 20223
+  Load factor: 0.337487
+Iteration 3; M =101111
+Fill table --------------------------
+  Table filled in 25 ms
+  Size: 75831, buckets 101111
+  Load factor: 0.749978
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 1 ms
+  New size: 68250, buckets 101111
+  Load factor: 0.675001
+Rehash X2 --------------------------
+  Table have been rehashed in 45 ms
+  New size: 68250, buckets 202223
+  Load factor: 0.337499
+Iteration 4; M =1011111
+Fill table --------------------------
+  Table filled in 244 ms
+  Size: 758331, buckets 1011111
+  Load factor: 0.749998
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 20 ms
+  New size: 682500, buckets 1011111
+  Load factor: 0.675
+Rehash X2 --------------------------
+  Table have been rehashed in 512 ms
+  New size: 682500, buckets 2022223
+  Load factor: 0.3375
+Iteration 5; M =10111111
+Fill table --------------------------
+  Table filled in 3154 ms
+  Size: 7583331, buckets 10111111
+  Load factor: 0.75
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 239 ms
+  New size: 6825000, buckets 10111111
+  Load factor: 0.675
+Rehash X2 --------------------------
+  Table have been rehashed in 11869 ms
+  New size: 6825000, buckets 20222223
+  Load factor: 0.3375
+++ Main test completed
+
+
+3. COPY/MOVE SEMANTICS TEST
+---------------------------
+PASSED copy constructor (basic checks)
+PASSED copy constructor (full content check)
++ Copy constructor
+PASSED copy assignment (basic checks)
+PASSED copy assignment (full content check)
++ Copy assignment
+PASSED move constructor (basic checks)
+PASSED move constructor (full content check)
++ Move constructor
+PASSED move assignment (basic checks)
+PASSED move assignment (full content check)
++ Move assignment
+PASSED self assigment (basic checks)
+PASSED self assigment (full content check)
++ Self-assignment
+++ Copy/move semantics test completed
+
+
+5. EXCEPTIONS TEST
+------------------
++ NON-ZERO M test passed
+
+========================================
+ALL TESTS PASSED SUCCESSFULLY!
+========================================
+-------------------------------------------------
+
+========================================
+Hash Tables TEST (Open Hash Table (открытая адресация))
+========================================
+
+
+1. EDGE CASES TEST
+------------------
++ Empty table checks passed
++ Single element checks passed
++ Duplicate prevention check passed
++ Single element removal passed
++ Non-existent removal passed
++ Clear operation passed
+++ All edge cases passed
+
+
+2. MAIN TEST
+-------------------------------------
+Iteration 0; M =101
+Fill table --------------------------
+  Table filled in 0 ms
+  Size: 75, buckets 101
+  Load factor: 0.742574
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 0 ms
+  New size: 69, buckets 101
+  Load factor: 0.683168
+Rehash X2 --------------------------
+  Table have been rehashed in 0 ms
+  New size: 69, buckets 203
+  Load factor: 0.339901
+Iteration 1; M =1011
+Fill table --------------------------
+  Table filled in 0 ms
+  Size: 756, buckets 1011
+  Load factor: 0.747774
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 0 ms
+  New size: 681, buckets 1011
+  Load factor: 0.673591
+Rehash X2 --------------------------
+  Table have been rehashed in 0 ms
+  New size: 681, buckets 2023
+  Load factor: 0.336629
+Iteration 2; M =10111
+Fill table --------------------------
+  Table filled in 0 ms
+  Size: 7581, buckets 10111
+  Load factor: 0.749777
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 0 ms
+  New size: 6825, buckets 10111
+  Load factor: 0.675007
+Rehash X2 --------------------------
+  Table have been rehashed in 1 ms
+  New size: 6825, buckets 20223
+  Load factor: 0.337487
+Iteration 3; M =101111
+Fill table --------------------------
+  Table filled in 11 ms
+  Size: 75831, buckets 101111
+  Load factor: 0.749978
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 0 ms
+  New size: 68250, buckets 101111
+  Load factor: 0.675001
+Rehash X2 --------------------------
+  Table have been rehashed in 10 ms
+  New size: 68250, buckets 202223
+  Load factor: 0.337499
+Iteration 4; M =1011111
+Fill table --------------------------
+  Table filled in 122 ms
+  Size: 758331, buckets 1011111
+  Load factor: 0.749998
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 4 ms
+  New size: 682500, buckets 1011111
+  Load factor: 0.675
+Rehash X2 --------------------------
+  Table have been rehashed in 105 ms
+  New size: 682500, buckets 2022223
+  Load factor: 0.3375
+Iteration 5; M =10111111
+Fill table --------------------------
+  Table filled in 1516 ms
+  Size: 7583331, buckets 10111111
+  Load factor: 0.75
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 54 ms
+  New size: 6825000, buckets 10111111
+  Load factor: 0.675
+Rehash X2 --------------------------
+  Table have been rehashed in 1011 ms
+  New size: 6825000, buckets 20222223
+  Load factor: 0.3375
+++ Main test completed
+
+
+3. COPY/MOVE SEMANTICS TEST
+---------------------------
+PASSED copy constructor (basic checks)
+PASSED copy constructor (full content check)
++ Copy constructor
+PASSED copy assignment (basic checks)
+PASSED copy assignment (full content check)
++ Copy assignment
+PASSED move constructor (basic checks)
+PASSED move constructor (full content check)
++ Move constructor
+PASSED move assignment (basic checks)
+PASSED move assignment (full content check)
++ Move assignment
+PASSED self assigment (basic checks)
+PASSED self assigment (full content check)
++ Self-assignment
+++ Copy/move semantics test completed
+
+
+5. EXCEPTIONS TEST
+------------------
++ NON-ZERO M test passed
++ Coprime check passed
++ NON ZERO A&B check passed
+
+4. COEFFICIENTS TEST
+-------------------------------------
+
+ ***** M = 950041; A = 0; B = 1
+Fill table --------------------------
+  Table filled in 116 ms
+  Size: 712530, buckets 950041
+  Load factor: 0.749999
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 4 ms
+  New size: 641277, buckets 950041
+  Load factor: 0.674999
+Rehash X2 --------------------------
+  Table have been rehashed in 100 ms
+  New size: 641277, buckets 1900083
+  Load factor: 0.337499
+
+ ***** M = 950041; A = 1; B = 1
+Fill table --------------------------
+  Table filled in 119 ms
+  Size: 712530, buckets 950041
+  Load factor: 0.749999
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 4 ms
+  New size: 641277, buckets 950041
+  Load factor: 0.674999
+Rehash X2 --------------------------
+  Table have been rehashed in 99 ms
+  New size: 641277, buckets 1900083
+  Load factor: 0.337499
+
+ ***** M = 950041; A = 2; B = 3
+Fill table --------------------------
+  Table filled in 124 ms
+  Size: 712530, buckets 950041
+  Load factor: 0.749999
+Find 10% --------------------------
+  10% elements founded in 0 ms
+Remove 10% --------------------------
+  10% elements removed in 4 ms
+  New size: 641277, buckets 950041
+  Load factor: 0.674999
+Rehash X2 --------------------------
+  Table have been rehashed in 94 ms
+  New size: 641277, buckets 1900083
+  Load factor: 0.337499
+++ Coefficients test completed
+
+
+========================================
+ALL TESTS PASSED SUCCESSFULLY!
+========================================
+
+D:\Otus_Algo\HashTables\out\build\x64-release\HashTables.exe (process 9500) exited with code 0 (0x0).
+Press any key to close this window . . .

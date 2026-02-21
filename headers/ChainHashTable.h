@@ -187,7 +187,6 @@ public:
 		}
 		return total;
 	}
-
 	//проверка на пустоту
 	bool empty() const noexcept override { return size() == 0; }
 

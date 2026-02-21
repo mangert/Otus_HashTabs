@@ -32,9 +32,28 @@ public:
 	}
 
 	OpenHashTable(const OpenHashTable&) = default;
-	OpenHashTable(OpenHashTable&&) = default;
+	
+	OpenHashTable(OpenHashTable&& other) noexcept
+		: table(std::move(other.table)),
+		M(std::exchange(other.M, 0)),
+		A(std::exchange(other.A, 0)),
+		B(std::exchange(other.B, 0)),
+		max_load_factor(std::move(other.max_load_factor)),
+		element_count(std::exchange(other.element_count, 0))
+	{}
 	OpenHashTable& operator=(const OpenHashTable&) = default;
-	OpenHashTable& operator=(OpenHashTable&&) = default;
+
+	OpenHashTable& operator=(OpenHashTable&& other) noexcept {
+		if (this != &other) {
+			table = std::move(other.table);
+			M = std::exchange(other.M, 0);
+			A = std::exchange(other.A, 0);
+			B = std::exchange(other.B, 0);
+			max_load_factor = other.max_load_factor;
+			element_count = std::exchange(other.element_count, 0);
+		}
+		return *this;
+	}
 	virtual ~OpenHashTable() = default;
 
 	//---------- Основные операции-------------------//
@@ -239,8 +258,7 @@ public:
 	[[nodiscard]] size_t max_bucket_count() const noexcept override { return M; }
 
 	//фактический размер
-	size_t size() const noexcept {		
-		
+	size_t size() const noexcept {				
 		return element_count;
 	}
 
@@ -249,7 +267,7 @@ public:
 
 	// Коэффициент заполнения
 	double load_factor() const override {
-		return static_cast<double>(element_count / M);
+		return static_cast<double>(element_count) / M;
 	}
 
 	//максимальный коэффициент заполнения
@@ -331,7 +349,7 @@ private:
 	size_t A; //линейный
 	size_t B; //квадратичный
 
-	const double max_load_factor;
+	double max_load_factor;
 
 	size_t element_count = 0; //количество "живых" элементов
 };

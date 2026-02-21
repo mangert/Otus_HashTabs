@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "IHashTable.h"
 #include <iostream>
 #include <vector>
@@ -25,24 +25,22 @@ public:
         std::cout << "========================================\n\n";
         
 
-        // 1. Тест граничных случаев
+        // 1. РўРµСЃС‚ РіСЂР°РЅРёС‡РЅС‹С… СЃР»СѓС‡Р°РµРІ
         test_edge_cases();
 		
-        // 2. Основной тест с разным размером таблиц
-        //main_test();
+        // 2. РћСЃРЅРѕРІРЅРѕР№ С‚РµСЃС‚ СЃ СЂР°Р·РЅС‹Рј СЂР°Р·РјРµСЂРѕРј С‚Р°Р±Р»РёС†
+        main_test();
         
-        // 3. Тест копирования и перемещения
+        // 3. РўРµСЃС‚ РєРѕРїРёСЂРѕРІР°РЅРёСЏ Рё РїРµСЂРµРјРµС‰РµРЅРёСЏ
         test_copy_move_semantics();
 		
-        // 5. Тесты на исключения        
+        // 4. РўРµСЃС‚С‹ РЅР° РёСЃРєР»СЋС‡РµРЅРёСЏ                
+        test_exceptions();        
+		
+        // 5. РўРµСЃС‚С‹ РЅР° РєРѕСЌС„С„РёС†РёРµРЅС‚С‹
         if constexpr (std::is_same_v<HashTable, OpenHashTable<int, std::string>>) {
-            test_exceptions();
+            test_coefficients();
         }
-		/*
-        // 6. Тесты на коэффициенты
-        if constexpr (std::is_same_v<HashTable, OpenHashTable<K, V>>) {
-            test_exceptions();
-        }*/
         std::cout << "\n========================================\n";
         std::cout << "ALL TESTS PASSED SUCCESSFULLY!\n";
         std::cout << "========================================\n";
@@ -50,20 +48,20 @@ public:
 
 private:
 
-	// ==================== 1. Граничные случаи ====================
+	// ==================== 1. Р“СЂР°РЅРёС‡РЅС‹Рµ СЃР»СѓС‡Р°Рё ====================
 	static void test_edge_cases() {
-		std::cout << "1. EDGE CASES TEST\n";
+		std::cout << "\n1. EDGE CASES TEST\n";
 		std::cout << "------------------\n";
 
 		size_t M = 10;
 		HashTable hashtable(M);
 
-		// 1.1 Пустая таблица
+		// 1.1 РџСѓСЃС‚Р°СЏ С‚Р°Р±Р»РёС†Р°
 		assert(hashtable.empty());
 		assert(hashtable.size() == 0);		
 		std::cout << "+ Empty table checks passed\n";
 
-		// 1.2 Один элемент
+		// 1.2 РћРґРёРЅ СЌР»РµРјРµРЅС‚
 		hashtable.insert(42, std::string("42"));
 		assert(!hashtable.empty());
 		assert(hashtable.size() == 1);		
@@ -72,24 +70,24 @@ private:
 		assert(*(hashtable.find(42)) == std::string("42"));
 		std::cout << "+ Single element checks passed\n";
 
-		// 1.3 Дубликаты не добавляются
-		hashtable.insert(42, std::string("42")); // Дубликат
+		// 1.3 Р”СѓР±Р»РёРєР°С‚С‹ РЅРµ РґРѕР±Р°РІР»СЏСЋС‚СЃСЏ
+		hashtable.insert(42, std::string("42")); // Р”СѓР±Р»РёРєР°С‚
 		assert(hashtable.size() == 1);
 		std::cout << "+ Duplicate prevention check passed\n";
 
-		// 1.4 Удаление единственного элемента
+		// 1.4 РЈРґР°Р»РµРЅРёРµ РµРґРёРЅСЃС‚РІРµРЅРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 		hashtable.remove(42);
 		assert(hashtable.empty());
 		assert(hashtable.size() == 0);		
 		assert(!hashtable.contains(42));
 		std::cout << "+ Single element removal passed\n";
 
-		// 1.5 Удаление несуществующего элемента
+		// 1.5 РЈРґР°Р»РµРЅРёРµ РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
 		hashtable.remove(999);
-		assert(hashtable.empty()); // Должно остаться пустым
+		assert(hashtable.empty()); // Р”РѕР»Р¶РЅРѕ РѕСЃС‚Р°С‚СЊСЃСЏ РїСѓСЃС‚С‹Рј
 		std::cout << "+ Non-existent removal passed\n";
 		
-		// 1.6 Очистка
+		// 1.6 РћС‡РёСЃС‚РєР°
 		hashtable.insert(1, std::string("1"));
 		hashtable.insert(2, std::string("2"));
 		hashtable.insert(3, std::string("3"));
@@ -101,10 +99,10 @@ private:
 		std::cout << "++ All edge cases passed\n\n";
 	}
 
-	// ==================== 2. Основной тест ====================	
+	// ==================== 2. РћСЃРЅРѕРІРЅРѕР№ С‚РµСЃС‚ ====================	
 	
 	static void main_test() {
-		std::cout << "2. MAIN TEST\n";
+		std::cout << "\n2. MAIN TEST\n";
 		std::cout << "-------------------------------------\n";
 		
 		size_t M = 101;
@@ -113,13 +111,127 @@ private:
 			single_main_test(M);
 			M = M * 10 + 1;
 		}
-
 		std::cout << "++ Main test completed\n\n";
-	}
+	}	
 
-	static void single_main_test(size_t M) {
-		
-		HashTable table(M);
+	static void test_copy_move_semantics() {
+		std::cout << "\n3. COPY/MOVE SEMANTICS TEST\n";
+		std::cout << "---------------------------\n";
+
+		size_t M = 50;
+		auto data = gen_data(M);
+		// РЎРѕР·РґР°С‘Рј РёСЃС…РѕРґРЅСѓСЋ С‚Р°Р±Р»РёС†Сѓ Рё Р·Р°РїРѕР»РЅСЏРµРј
+		HashTable original(M);
+		for (size_t i = 0; i != M; ++i) {
+			original.insert(data[i].first, data[i].second);
+		}				
+
+		// 4.1 РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+		HashTable copy_constructed(original);
+		verify_equality(original, copy_constructed, data, "copy constructor");
+		std::cout << "+ Copy constructor\n";
+
+		// 4.2 РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ РєРѕРїРёСЂРѕРІР°РЅРёРµРј		
+		HashTable copy_assigned = original;
+		verify_equality(original, copy_assigned, data, "copy assignment");
+		std::cout << "+ Copy assignment\n";
+
+		// 4.3 РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРµСЂРµРјРµС‰РµРЅРёСЏ
+		HashTable temp_for_move1 = original; // РєРѕРїРёСЂСѓРµРј
+		HashTable move_constructed(std::move(temp_for_move1));
+		verify_equality(original, move_constructed, data, "move constructor");
+		assert(temp_for_move1.empty() || temp_for_move1.size() == 0);
+		std::cout << "+ Move constructor\n";
+
+		// 4.4 РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ РїРµСЂРµРјРµС‰РµРЅРёРµРј
+		HashTable temp_for_move2 = original; // РєРѕРїРёСЂСѓРµРј		
+		HashTable move_assigned = std::move(temp_for_move2);
+		verify_equality(original, move_assigned, data, "move assignment");
+		assert(temp_for_move2.empty() || temp_for_move2.size() == 0);
+		std::cout << "+ Move assignment\n";
+
+		// 4.5 Self-assignment
+		HashTable self_assigned = original;
+		self_assigned = self_assigned; // self-assignment
+		verify_equality(original, self_assigned, data, "self assigment");
+		std::cout << "+ Self-assignment\n";
+		std::cout << "++ Copy/move semantics test completed\n\n";
+	}	    
+    
+    // РўРµСЃС‚ СЃ СЂР°Р·РЅС‹РјРё РєРѕСЌС„С„РёС†РёРµРЅС‚Р°РјРё (РґР»СЏ OpenHashTable)    
+    static void test_coefficients() {
+        std::vector<std::tuple<size_t, size_t, size_t>> params = {
+            {950041, 0, 1},    // РєР»Р°СЃСЃРёС‡РµСЃРєРёР№
+            {950041, 1, 1},    // СЃ Р»РёРЅРµР№РЅС‹Рј С‡Р»РµРЅРѕРј
+            {950041, 2, 3},     // РїСЂРѕСЃС‚С‹Рµ С‡РёСЃР»Р°            
+        };
+
+		std::cout << "\n4. COEFFICIENTS TEST\n";
+		std::cout << "-------------------------------------\n";		
+
+        for (auto [M, A, B] : params) {
+			std::cout << "\n ***** M = " << M << "; A = " << A << "; B = " << B << "\n";
+			single_main_test(M, A, B);
+        }
+
+		std::cout << "++ Coefficients test completed\n\n";
+    }
+	
+    // РўРµСЃС‚ РЅР° РёСЃРєР»СЋС‡РµРЅРёСЏ
+	static void test_exceptions() {
+		std::cout << "\n5. EXCEPTIONS TEST\n";
+		std::cout << "------------------\n";
+
+		// РџСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРёРґР°РµС‚ РїСЂРё M=0
+		try {
+			HashTable(0);
+			std::cout << "FAILED: Expected std::invalid_argument, but no exception thrown";
+		}
+		catch (const std::invalid_argument&) {
+			std::cout << "+ NON-ZERO M test passed\n";
+		}
+		catch (...) {
+			std::cout << "FAILED: Expected std::invalid_argument, but different exception thrown";
+		}
+
+		// РџСЂРѕРІРµСЂРєР° РІР·Р°РёРјРЅРѕР№ РїСЂРѕСЃС‚РѕС‚С‹ (С‚РѕР»СЊРєРѕ РґР»СЏ OpenHashTable)
+		if constexpr (std::is_same_v<HashTable, OpenHashTable<int, std::string>>) {
+			try {
+				OpenHashTable<int, std::string> bad_table(100, 2, 2); // A=2, B=2, M=100 (gcd(2,100)=2)
+				std::cout << "FAILED: Expected std::invalid_argument about coprime, but no exception thrown";
+			}
+			catch (const std::invalid_argument&) {
+				std::cout << "+ Coprime check passed\n";
+			}
+			catch (...) {
+				std::cout << "FAILED: Expected std::invalid_argument, but different exception thrown";
+			}
+			// РџСЂРѕРІРµСЂРєР° РЅР° РЅСѓР»РµРІС‹Р№ РєРѕСЌС„С„РёС†РёРµРЅС‚С‹ (С‚РѕР»СЊРєРѕ РґР»СЏ OpenHashTable)
+			try {
+				OpenHashTable<int, std::string> bad_table(100, 0, 0); // A, B == 0
+				std::cout << "FAILED: Expected std::invalid_argument about zero A B, but no exception thrown";
+			}
+			catch (const std::invalid_argument&) {
+				std::cout << "+ NON ZERO A&B check passed\n";
+			}
+			catch (...) {
+				std::cout << "FAILED: Expected std::invalid_argument, but different exception thrown";
+			}
+		}
+	}    
+	// ==================== Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё ====================	
+	//С„СѓРЅРєС†РёСЏ РєРѕРјРїРїР»РµРєСЃРЅРѕРіРѕ С‚РµСЃС‚Р° РЅР° РµРґРёРЅРёС‡РЅРѕРј РЅР°Р±РѕСЂРµ РґР°РЅРЅС‹С…
+	static void single_main_test(size_t M, size_t a = 0, size_t b = 1) {
+
+		HashTable table = [&]() {
+			if constexpr (std::is_same_v<HashTable, OpenHashTable<int, std::string>>) {
+				return HashTable(M, a, b);
+			}
+			else {
+				return HashTable(M);
+			}
+			}();
+
 		std::cout << "Fill table --------------------------\n";
 		auto data = gen_data(M / 4 * 3);
 		auto start = std::chrono::high_resolution_clock::now();
@@ -143,113 +255,94 @@ private:
 		}
 		end = std::chrono::high_resolution_clock::now();
 		duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-		std::cout << "  10% elements founded in " << duration.count() << " ms\n";		
-
-		std::cout << "Remove 10% --------------------------\n";
 		
+		std::cout << "  10% elements founded in " << duration.count() << " ms\n";
+		std::cout << "Remove 10% --------------------------\n";
+
 		size_t to_remove = M / 40 * 3;
-		start = std::chrono::high_resolution_clock::now();		
+		start = std::chrono::high_resolution_clock::now();
 		for (size_t i = 0; i != to_remove; ++i) {
 			bool success = table.remove(data[i].first);
 			assert(success);
 		}
 		end = std::chrono::high_resolution_clock::now();
 		duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
 		std::cout << "  10% elements removed in " << duration.count() << " ms\n";
 		std::cout << "  New size: " << table.size() << ", buckets " << table.max_bucket_count() << "\n";
 		std::cout << "  Load factor: " << table.load_factor() << "\n";
+
+		std::cout << "Rehash X2 --------------------------\n";
+		
+		start = std::chrono::high_resolution_clock::now();		
+		table.rehash(M * 2 + 1);
+		end = std::chrono::high_resolution_clock::now();
+		duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+		std::cout << "  Table have been rehashed in " << duration.count() << " ms\n";
+		std::cout << "  New size: " << table.size() << ", buckets " << table.max_bucket_count() << "\n";
+		std::cout << "  Load factor: " << table.load_factor() << "\n";
 	}
+	//РїСЂРѕРІРµСЂРєР° СЃРєРѕРїРёСЂРѕРІР°РЅРЅС‹С… / РїРµСЂРµРјРµС‰РµРЅРЅС‹С… С‚Р°Р±Р»РёС†
+	static void verify_equality(const HashTable& t1, const HashTable& t2, 
+		const std::vector<std::pair<int, std::string>>& test_data, const std::string& test_name) {
 
-	static void test_copy_move_semantics() {
-		std::cout << "4. COPY/MOVE SEMANTICS TEST\n";
-		std::cout << "---------------------------\n";
+		// 1. РџСЂРѕРІРµСЂСЏРµРј СЂР°Р·РјРµСЂ
+		if (t1.size() != t2.size()) {
+			std::cerr << "FAILED " << test_name << ": sizes differ: "
+				<< t1.size() << " vs " << t2.size() << std::endl;
+			return;
+		}
 
-		size_t M = 50;
-		auto data = gen_data(M);
-		// Создаём исходную таблицу и заполняем
-		HashTable original(M);
-		for (size_t i = 0; i != M/2; ++i) {
-			original.insert(data[i].first, data[i].second);
-		}				
+		// 2. РџСЂРѕРІРµСЂСЏРµРј empty() СЃРѕРіР»Р°СЃРѕРІР°РЅРЅРѕСЃС‚СЊ
+		if (t1.empty() != t2.empty()) {
+			std::cerr << "FAILED " << test_name << ": empty() mismatch" << std::endl;
+			return;
+		}
 
-		// 4.1 Конструктор копирования
-		HashTable copy_constructed(original);
-		//verify_equality(original, copy_constructed, "copy constructor");
-		std::cout << "+ Copy constructor\n";
+		// 3. РџСЂРѕРІРµСЂСЏРµРј load_factor
+		if (std::abs(t1.load_factor() - t2.load_factor()) > 1e-10) {
+			std::cerr << "FAILED " << test_name << ": load factors differ: "
+				<< t1.load_factor() << " vs " << t2.load_factor() << std::endl;
+			return;
+		}
 
-		// 4.2 Оператор присваивания копированием
-		//Tree copy_assigned;
-		HashTable copy_assigned = original;
-		//verify_equality(original, copy_assigned, "copy assignment");
-		std::cout << "+ Copy assignment\n";
-
-		// 4.3 Конструктор перемещения
-		HashTable temp_for_move1 = original; // копируем
-		HashTable move_constructed(std::move(temp_for_move1));
-		//verify_equality(original, move_constructed, "move constructor");
-		std::cout << "temp_for_move1" << temp_for_move1.size();
-
-		//assert(temp_for_move1.empty() || temp_for_move1.size() == 0);
-		std::cout << "+ Move constructor\n";
-
-		// 4.4 Оператор присваивания перемещением
-		HashTable temp_for_move2 = original; // копируем
-		//move_assigned;
-		HashTable move_assigned = std::move(temp_for_move2);
-		//verify_equality(original, move_assigned, "move assignment");
-		assert(temp_for_move2.empty() || temp_for_move2.size() == 0);
-		std::cout << "+ Move assignment\n";
-
-		// 4.5 Self-assignment
-		HashTable self_assigned = original;
-		//self_assigned = self_assigned; // self-assignment
-		//verify_equality(original, self_assigned, "self-assignment");
-		std::cout << "+ Self-assignment\n";
-		std::cout << "++ Copy/move semantics test completed\n\n";
-	}	
-    /*
-    
-    // Тест с разными коэффициентами (для OpenHashTable)
-    template<typename Table>
-    void test_coefficients() {
-        std::vector<std::tuple<size_t, size_t, size_t>> params = {
-            {101, 0, 1},    // классический
-            {101, 1, 1},    // с линейным членом
-            {97, 2, 3},     // простые числа
-            // ... и так далее
-        };
-
-        for (auto [M, A, B] : params) {
-            Table table(M, A, B);
-            // тестируем
-        }
-    }
-	*/
-    // Тест на исключения
-    static void test_exceptions() {
-		std::cout << "7. EXCEPTIONS TEST\n";
-		std::cout << "------------------\n";
-        // Проверяем, что конструктор кидает при M=0
-        //EXPECT_THROW(HashTable(0), std::invalid_argument("Size must be positive"));
-		std::cout << "+ NON-ZERO M test passed\n";
+		// 4. РџСЂРѕРІРµСЂСЏРµРј max_bucket_count
 		
-        // Проверяем, что gcd проверка работает
-        //EXPECT_THROW(HashTable(100, 2, 2), std::invalid_argument("Size must be positive"));
-		std::cout << "+ PRIME A, B with M test passed\n";
+		if (t1.max_bucket_count() != t2.max_bucket_count()) {
+			std::cerr << "FAILED " << test_name << ": max_bucket_count differ: "
+			<< t1.max_bucket_count() << " vs " << t2.max_bucket_count() << std::endl;
+			return;
+		}		
 
-		// Проверяем, что gcd проверка работает
-		//EXPECT_THROW(HashTable(100, 0, 0), std::invalid_argument("Size must be positive"));
-		std::cout << "+ NON-ZERO A, B  test passed\n";
+		std::cout << "PASSED " << test_name << " (basic checks)" << std::endl;
 		
-		std::cout << "++ All exception tests passed\n\n";
-    }
-	// ==================== Вспомогательные функции ====================	
-	//основные тесты на одном наборе
+		// РџСЂРѕРІРµСЂСЏРµРј РІСЃРµ РєР»СЋС‡Рё РёР· С‚РµСЃС‚РѕРІС‹С… РґР°РЅРЅС‹С…
+		for (const auto& [key, expected_value] : test_data) {
+			auto* val1 = t1.find(key);
+			auto* val2 = t2.find(key);
+
+			// РџСЂРѕРІРµСЂСЏРµРј РЅР°Р»РёС‡РёРµ
+			if ((val1 == nullptr) != (val2 == nullptr)) {
+				std::cerr << "FAILED " << test_name << ": key " << key
+					<< " exists in one table but not the other" << std::endl;
+				return;
+			}
+
+			// Р•СЃР»Рё РєР»СЋС‡ РµСЃС‚СЊ РІ РѕР±РµРёС…, РїСЂРѕРІРµСЂСЏРµРј Р·РЅР°С‡РµРЅРёРµ
+			if (val1 != nullptr && *val1 != *val2) {
+				std::cerr << "FAILED " << test_name << ": value mismatch for key " << key
+					<< ": '" << *val1 << "' vs '" << *val2 << "'" << std::endl;
+				return;
+			}
+		}		
+		std::cout << "PASSED " << test_name << " (full content check)" << std::endl;
+	}
 	
-	// ==================== Генерация тестовых данных ====================	
+	// ==================== Р“РµРЅРµСЂР°С†РёСЏ С‚РµСЃС‚РѕРІС‹С… РґР°РЅРЅС‹С… ====================	
 	
 	static std::vector<std::pair<int, std::string>> gen_data(size_t size) {		
-		// Подготовка данных
+		// РџРѕРґРіРѕС‚РѕРІРєР° РґР°РЅРЅС‹С…
 		std::vector<std::pair<int, std::string>> data(size);		
 
 		for (size_t i = 0; i < size; i++) {
