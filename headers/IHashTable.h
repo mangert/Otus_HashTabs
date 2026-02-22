@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <concepts>
 
 template<typename T>
@@ -12,15 +12,15 @@ class IHashTable {
 
 public:	
 	
-	//---------- Основные операции-------------------//
-	//Операции вставки
+	//---------- РћСЃРЅРѕРІРЅС‹Рµ РѕРїРµСЂР°С†РёРё-------------------//
+	//РћРїРµСЂР°С†РёРё РІСЃС‚Р°РІРєРё
 	virtual bool insert(K key, const V& value) = 0;
 	virtual bool insert(K key, V&& value) = 0;
 
-	//операции удаления
+	//РѕРїРµСЂР°С†РёРё СѓРґР°Р»РµРЅРёСЏ
 	virtual bool remove(const K& key) = 0;
 	
-	//операции доступа и поиска
+	//РѕРїРµСЂР°С†РёРё РґРѕСЃС‚СѓРїР° Рё РїРѕРёСЃРєР°
 	virtual bool contains(const K& key) const = 0;
 	
 	virtual V* find(const K& key) = 0;
@@ -29,25 +29,25 @@ public:
 	virtual V& at(const K& key) = 0;
 	virtual const V& at(const K& key) const = 0;
 	
-	// Только для неконстантных объектов
+	// РўРѕР»СЊРєРѕ РґР»СЏ РЅРµРєРѕРЅСЃС‚Р°РЅС‚РЅС‹С… РѕР±СЉРµРєС‚РѕРІ
 	virtual V& operator[](const K& key) = 0;
 
-	//очистка
+	//РѕС‡РёСЃС‚РєР°
 	virtual void clear() = 0;
 	
-	//---------- Рехэширование -------------------//
+	//---------- Р РµС…СЌС€РёСЂРѕРІР°РЅРёРµ -------------------//
 	virtual void rehash(size_t new_size) = 0;
 	
-	//---------- Характeристики-------------------//
+	//---------- РҐР°СЂР°РєС‚eСЂРёСЃС‚РёРєРё-------------------//
 
-	//максимальное число бакетов
+	//РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ С‡РёСЃР»Рѕ Р±Р°РєРµС‚РѕРІ
 	virtual [[nodiscard]] size_t max_bucket_count() const noexcept = 0;
 	
-	//фактический размер
+	//С„Р°РєС‚РёС‡РµСЃРєРёР№ СЂР°Р·РјРµСЂ
 	virtual size_t size() const noexcept = 0;
-	//проверка на пустоту
+	//РїСЂРѕРІРµСЂРєР° РЅР° РїСѓСЃС‚РѕС‚Сѓ
 	virtual bool empty() const noexcept = 0;
 
-	// Коэффициент заполнения
+	// РљРѕСЌС„С„РёС†РёРµРЅС‚ Р·Р°РїРѕР»РЅРµРЅРёСЏ
 	virtual double load_factor() const = 0;
 };
